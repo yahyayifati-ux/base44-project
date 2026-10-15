@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 
 import { api } from '../api'
 import { EmptyState, ErrorState, LoadingState } from '../components/Feedback.jsx'
+import HomeHero from '../components/HomeHero.jsx'
+import ParallaxImage from '../components/ParallaxImage.jsx'
 import PropertyCard from '../components/PropertyCard.jsx'
 import Reveal from '../components/Reveal.jsx'
 import { useSettings } from '../components/settings.jsx'
-import { faNumber, telLink, whatsappLink } from '../format'
+import { faNumber } from '../format'
 import { useSeo } from '../seo.js'
 
 const SERVICES = [
@@ -42,104 +44,6 @@ const AREAS = [
   { label: 'رمچاه', value: 'رمچاه' },
   { label: 'سوزا', value: 'سوزا' },
 ]
-
-function Hero({ settings }) {
-  const heroImage = settings?.hero_image || '/images/hero.jpg'
-  const headline = settings?.hero_headline_fa || 'انتخابی مطمئن برای آینده‌ای ارزشمند'
-  const sub =
-    settings?.hero_sub_fa ||
-    'املاک جاوید در قشم و درگهان کنار شماست تا با شناخت دقیق موقعیت، متراژ و مدارک هر ملک، تصمیم مطمئن‌تری بگیرید.'
-  const phone = settings?.phone_1 || ''
-  const whatsapp = settings?.whatsapp || ''
-  const address = settings?.address_fa || 'جزیره قشم، استان هرمزگان'
-
-  const [offset, setOffset] = useState(0)
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined
-    let frame = 0
-    const onScroll = () => {
-      if (frame) return
-      frame = window.requestAnimationFrame(() => {
-        frame = 0
-        setOffset(Math.min(window.scrollY, 700))
-      })
-    }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      if (frame) window.cancelAnimationFrame(frame)
-    }
-  }, [])
-
-  return (
-    <section className="hero">
-      <div className="hero__media" aria-hidden="true">
-        <img
-          src={heroImage}
-          alt=""
-          style={{
-            transform: `translate3d(0, ${offset * 0.05}px, 0) scale(${1.1 - offset / 9000})`,
-          }}
-        />
-      </div>
-      <div className="hero__scrim" aria-hidden="true" />
-
-      <div className="hero__inner">
-        <div className="shell shell--wide">
-          <div className="hero__topline">
-            <span className="eyebrow" style={{ color: 'var(--gold-soft)' }}>
-              JAVID REAL ESTATE · AMLAK-E JAVeD
-            </span>
-            <span className="hero__sub" style={{ maxWidth: '38ch' }}>
-              {sub}
-            </span>
-          </div>
-
-          <span className="hero__qeshm" aria-hidden="true">
-            QESHM
-          </span>
-          <p className="hero__type" aria-hidden="true">
-            Real <em>Estate</em>
-          </p>
-
-          <div className="hero__bottom">
-            <div>
-              <h1 className="hero__headline">{headline}</h1>
-              <div className="hero__actions">
-                <Link className="btn btn--light" to="/properties">
-                  مشاهده املاک
-                </Link>
-                <Link className="btn btn--outline-inverse" to="/contact">
-                  دریافت مشاوره
-                </Link>
-              </div>
-            </div>
-
-            <div className="hero__meta">
-              {phone ? (
-                <a className="en-sans" href={telLink(phone)} style={{ fontSize: '1.05rem' }}>
-                  {phone}
-                </a>
-              ) : null}
-              {whatsapp ? (
-                <a
-                  href={whatsappLink(whatsapp, 'سلام، برای مشاوره خرید ملک در قشم تماس می‌گیرم.')}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  گفت‌وگو در واتس‌اپ
-                </a>
-              ) : null}
-              <span>{address}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <span className="hero__scroll">Scroll</span>
-    </section>
-  )
-}
 
 export default function HomePage() {
   const { settings } = useSettings()
@@ -186,15 +90,18 @@ export default function HomePage() {
 
   return (
     <>
-      <Hero settings={settings} />
+      <HomeHero settings={settings} />
 
       {/* ---------- project overview ---------- */}
-      <section className="section" id="about">
+      <section className="section section--cream" id="about">
         <div className="shell shell--wide">
           <div className="overview">
             <Reveal>
-              <p className="eyebrow">Project Overview</p>
-              <h2 className="title-lg" style={{ marginTop: 16 }}>
+              <p className="overview__marker">
+                <strong className="overview__marker-strong">Project</strong>
+                <em className="overview__marker-em">overview</em>
+              </p>
+              <h2 className="title-lg">
                 املاک جاوید
                 <br />
                 در یک نگاه
@@ -224,15 +131,17 @@ export default function HomePage() {
               </Link>
             </Reveal>
 
-            <Reveal delay={160} className="overview__image">
-              <img src={aboutImage} alt="معماری مسکونی مدرن" loading="lazy" />
-            </Reveal>
+            <ParallaxImage
+              className="overview__image"
+              src={aboutImage}
+              alt="معماری مسکونی مدرن"
+            />
           </div>
         </div>
       </section>
 
       {/* ---------- categories ---------- */}
-      <section className="section section--cream">
+      <section className="section section--paper">
         <div className="shell shell--wide">
           <div className="section-header">
             <p className="eyebrow">Property Categories</p>

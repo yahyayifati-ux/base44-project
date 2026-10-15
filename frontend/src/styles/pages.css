@@ -50,20 +50,30 @@
   padding-bottom: clamp(34px, 5vw, 64px);
 }
 
-.hero__type {
+/* The brand wordmark is the hero's typographic layer: oversized, translucent
+   and centred so the photograph reads through the letterforms. */
+.hero__wordmark {
+  position: absolute;
+  top: clamp(94px, 14vh, 176px);
+  inset-inline: 0;
+  z-index: 2;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
   font-family: var(--font-en);
-  font-size: clamp(3.4rem, 13.5vw, 12rem);
-  line-height: 0.84;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.6rem, 15vw, 13rem);
+  line-height: 0.88;
+  letter-spacing: 0.004em;
   text-transform: uppercase;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.96);
-  margin-bottom: 6px;
+  color: rgba(255, 255, 255, 0.5);
+  text-shadow: 0 2px 42px rgba(9, 22, 19, 0.4);
+  will-change: transform, opacity;
 }
 
-.hero__type em {
+.hero__wordmark em {
   font-style: italic;
-  color: var(--gold-soft);
+  color: rgba(255, 255, 255, 0.68);
 }
 
 .hero__topline {
@@ -96,10 +106,10 @@
 }
 
 .hero__headline {
-  font-size: clamp(1.5rem, 3.4vw, 2.9rem);
+  font-size: clamp(1.7rem, 3.9vw, 3.3rem);
   font-weight: 500;
-  line-height: 1.5;
-  max-width: 24ch;
+  line-height: 1.45;
+  max-width: 22ch;
 }
 
 .hero__sub {
@@ -116,14 +126,42 @@
   margin-top: 24px;
 }
 
-.hero__meta {
+/* Office details, laid out like the reference: a row of items separated by
+   thin dividers instead of a stacked list. */
+.hero__bar {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 14px clamp(18px, 3vw, 46px);
+  margin-top: clamp(24px, 3vw, 38px);
   border-top: 1px solid var(--line-inverse);
-  padding-top: 18px;
-  font-size: 0.84rem;
-  color: rgba(255, 255, 255, 0.78);
+  padding-top: 20px;
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.hero__bar-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-inline-end: clamp(18px, 3vw, 46px);
+  border-inline-end: 1px solid var(--line-inverse);
+}
+
+.hero__bar-item:last-child {
+  border-inline-end: 0;
+  padding-inline-end: 0;
+}
+
+.hero__bar-label {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.hero__bar-phones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
 }
 
 .hero__scroll {
@@ -141,23 +179,74 @@
 
 /* ---------- homepage ---------- */
 
+/* Cream "PROJECT overview" block — the editorial counterpart to the hero.
+   Persian copy holds the left column, the architectural photograph the right. */
 .overview {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr) minmax(0, 1fr);
-  gap: clamp(24px, 4vw, 64px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  grid-template-rows: auto auto;
+  gap: clamp(20px, 3vw, 40px) clamp(28px, 5vw, 84px);
   align-items: start;
 }
 
-.overview__image {
-  border: 1px solid var(--line);
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
+.overview__marker {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: clamp(14px, 2vw, 22px);
 }
 
-.overview__image img {
+.overview__marker-strong {
+  font-family: var(--font-sans);
+  font-size: clamp(1.4rem, 2.4vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  direction: ltr;
+}
+
+.overview__marker-em {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: clamp(1.15rem, 1.9vw, 1.6rem);
+  line-height: 1.1;
+  color: var(--muted);
+  direction: ltr;
+}
+
+.overview__image {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: stretch;
+  min-height: clamp(320px, 42vw, 620px);
+}
+
+/* ---------- editorial image reveal ---------- */
+
+.parallax {
+  position: relative;
+  display: block;
+  margin: 0;
+  overflow: hidden;
+  background: var(--sand);
+  border: 1px solid var(--line);
+}
+
+.parallax img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  will-change: transform;
+  /* The photograph opens behind a mask. It lives on the image, never on the
+     frame itself: a clip-path on the observed element would keep that element
+     from ever being reported as intersecting. */
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.25s var(--ease);
+}
+
+.parallax.is-shown img {
+  clip-path: inset(0 0 0 0);
 }
 
 .overview__meta {
@@ -686,14 +775,21 @@
   .overview {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
-
-  .overview__image {
-    grid-column: span 2;
-    aspect-ratio: 16 / 9;
-  }
 }
 
 @media (max-width: 1024px) {
+  /* The overview stacks: Persian copy first, photograph beneath it. */
+  .overview {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+
+  .overview__image {
+    grid-column: 1;
+    grid-row: auto;
+    min-height: clamp(260px, 52vw, 460px);
+  }
+
   .listing-layout {
     grid-template-columns: 1fr;
   }
@@ -739,14 +835,6 @@
     grid-template-columns: 1fr;
   }
 
-  .overview {
-    grid-template-columns: 1fr;
-  }
-
-  .overview__image {
-    grid-column: auto;
-  }
-
   .sticky-contact {
     display: flex;
     position: fixed;
@@ -765,8 +853,13 @@
 }
 
 @media (max-width: 620px) {
-  .hero__type {
-    font-size: clamp(2.7rem, 17vw, 5rem);
+  .hero__wordmark {
+    top: clamp(86px, 12vh, 118px);
+    font-size: clamp(2.35rem, 14.5vw, 4rem);
+  }
+
+  .hero__bottom {
+    gap: 18px;
   }
 
   .stat-grid {
