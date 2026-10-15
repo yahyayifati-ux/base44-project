@@ -1,0 +1,38 @@
+/* Design tokens for JAVID REAL ESTATE.
+   Palette: warm ivory and stone neutrals, charcoal, muted olive, a restrained
+   deep emerald from the جاوید storefront and muted gold accents. */
+
+:root {
+  --ivory: #f5f1ea;
+  --paper: #fbf9f6;
+  --cream: #eae4da;
+  --sand: #ded4c5;
+
+  --charcoal: #292a27;
+  --smoky: #555650;
+  --olive: #696b52;
+  --muted: #7e7f76;
+
+  --emerald: #12382f;
+  --emerald-deep: #0b211c;
+
+  --gold: #b9a477;
+  --gold-soft: #d9cbaa;
+
+  --white: #ffffff;
+
+  --line: rgba(41, 42, 39, 0.14);
+  --line-strong: rgba(41, 42, 39, 0.3);
+  --line-inverse: rgba(255, 255, 255, 0.2);
+
+  --font-fa: 'Vazirmatn', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-en: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --shell: 1340px;
+  --gutter: clamp(18px, 4.5vw, 80px);
+  --section-y: clamp(64px, 9vw, 148px);
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --shadow-soft: 0 18px 60px rgba(20, 24, 22, 0.09);
+}

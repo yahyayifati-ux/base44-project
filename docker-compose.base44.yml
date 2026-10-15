@@ -1,0 +1,112 @@
+# Base44 development stack for JAVID REAL ESTATE.
+#
+# Runs the app from the cloned source with live reload (no prebuilt app images):
+#   - db       : PostgreSQL (infrastructure)
+#   - migrate  : one-shot schema + seed job (exits when done)
+#   - backend  : FastAPI + uvicorn --reload  (host port 8000, for API debugging)
+#   - frontend : Vite dev server             (host port 3000 = the preview entry point)
+#
+# The browser talks to the API through the Vite dev-server proxy (/api, /media),
+# so the app is served from a single origin and session cookies just work.
+#
+# Secrets supplied by the platform arrive in /run/base44/app.env, which is listed
+# LAST so real values always win over the committed development placeholders.
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: on-failure
+    environment:
+      POSTGRES_USER: javid
+      POSTGRES_PASSWORD: javid_local_dev
+      POSTGRES_DB: javid
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U javid -d javid"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 15s
+
+  migrate:
+    build:
+      context: ./backend
+    working_dir: /app
+    command: ["sh", "-ec", "python -m app.migrate"]
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql+psycopg://javid:javid_local_dev@db:5432/javid
+    env_file:
+      - ./.env.base44-defaults
+      - /run/base44/app.env
+    depends_on:
+      db:
+        condition: service_healthy
+
+  backend:
+    build:
+      context: ./backend
+    restart: on-failure
+    working_dir: /app
+    command:
+      - sh
+      - -ec
+      - exec uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/app
+    volumes:
+      - ./backend:/app
+      - uploads:/app/uploads
+    environment:
+      - DATABASE_URL=postgresql+psycopg://javid:javid_local_dev@db:5432/javid
+      - UPLOAD_DIR=/app/uploads
+      - CORS_ORIGINS=http://localhost:3000,https://3000-${BASE44_PUBLIC_HOST_SUFFIX:-}
+      - BASE44_PREVIEW_MODE
+    env_file:
+      - ./.env.base44-defaults
+      - /run/base44/app.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      # Probes a real read-only API route (which also touches the database).
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/categories').read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 8
+      start_period: 25s
+
+  frontend:
+    image: node:22
+    restart: on-failure
+    working_dir: /app
+    command: ["sh", "-ec", "npm ci --no-audit --no-fund && exec npm run dev"]
+    volumes:
+      - ./frontend:/app
+      - node-modules:/app/node_modules
+    environment:
+      - VITE_API_TARGET=http://backend:8000
+      - BASE44_PREVIEW_MODE
+      - BASE44_SANDBOX_HOST_DOMAIN
+      - BASE44_PUBLIC_HOST_SUFFIX
+      - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 45s
+
+volumes:
+  db-data:
+  uploads:
+  node-modules:
