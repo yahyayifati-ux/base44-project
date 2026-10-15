@@ -105,7 +105,11 @@ class Inquiry(Base):
     phone = Column(String(32), nullable=False)
     email = Column(String(255), nullable=False, default="")
     message = Column(Text, nullable=False, default="")
-    property_id = Column(Integer, ForeignKey("properties.id"), nullable=True)
+    # SET NULL keeps the lead alive: deleting a listing must never destroy the
+    # customer inquiries it received (each one keeps its own copy of the title).
+    property_id = Column(
+        Integer, ForeignKey("properties.id", ondelete="SET NULL"), nullable=True
+    )
     property_title = Column(String(255), nullable=False, default="")
     status = Column(String(16), nullable=False, default="new", index=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

@@ -68,7 +68,11 @@ normally reaches the API through the Vite proxy on the same origin.
   only creates missing tables.
 - **Deleting a listing never deletes leads.** `DELETE /api/admin/properties/{id}`
   first clears `inquiries.property_id` (each inquiry keeps its own copy of the
-  property title), so the delete succeeds and customer inquiries survive.
+  property title), so the delete succeeds and customer inquiries survive. The
+  database enforces the same rule: `inquiries.property_id` carries
+  `ON DELETE SET NULL`, re-created idempotently by `migrate`
+  (`ensure_inquiry_property_fk`), so a raw delete can never fail on — or destroy —
+  an inquiry either.
 - **Public listings only ever expose `published` records.** An unpublished or deleted
   slug returns 404 from `/api/properties/{slug}` while staying visible in
   `/api/admin/properties`.

@@ -125,6 +125,26 @@ def ensure_money_columns() -> None:
             conn.execute(text(f"ALTER TABLE {table} ALTER COLUMN {column} TYPE BIGINT"))
 
 
+def ensure_inquiry_property_fk() -> None:
+    """`inquiries.property_id` must be ON DELETE SET NULL.
+
+    Deleting a listing has to keep the customer inquiries it received, so the
+    database drops the reference instead of refusing the delete. `create_all`
+    never alters an existing constraint, so databases created before this change
+    need it re-created explicitly. The statements are idempotent.
+    """
+    with engine.begin() as conn:
+        conn.execute(
+            text("ALTER TABLE inquiries DROP CONSTRAINT IF EXISTS inquiries_property_id_fkey")
+        )
+        conn.execute(
+            text(
+                "ALTER TABLE inquiries ADD CONSTRAINT inquiries_property_id_fkey "
+                "FOREIGN KEY (property_id) REFERENCES properties(id) ON DELETE SET NULL"
+            )
+        )
+
+
 def seed_categories(db) -> None:
     for slug, title, description, image, order in CATEGORIES:
         existing = db.query(models.Category).filter(models.Category.slug == slug).first()
@@ -179,6 +199,7 @@ def seed_admin(db) -> None:
 def run() -> None:
     Base.metadata.create_all(bind=engine)
     ensure_money_columns()
+    ensure_inquiry_property_fk()
     db = SessionLocal()
     try:
         seed_categories(db)
