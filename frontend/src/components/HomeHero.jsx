@@ -1,23 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { telLink } from '../format'
-
-/* Homepage hero: oversized editorial "Real Estate" typography layered over the
-   JAVID office photograph, with a short Persian headline, a single call to
-   action and a subtle line of office details at the foot. The wordmark and
-   photograph drift gently against the scroll; everything collapses to a
-   static block when the visitor prefers reduced motion. */
+/* Cinematic hero: the JAVID office photograph fills the screen, an oversized
+   translucent "Real Estate" wordmark sits at the top, and a single Persian
+   headline with two actions anchors the bottom. The photograph and wordmark
+   drift gently against the scroll; everything collapses to a static block
+   when the visitor prefers reduced motion. */
 export default function HomeHero({ settings }) {
   const heroImage = settings?.hero_image || '/images/hero.jpg'
   const headline = settings?.hero_headline_fa || 'انتخابی مطمئن برای آینده‌ای ارزشمند'
-  const sub =
-    settings?.hero_sub_fa ||
-    'املاک جاوید در قشم و درگهان کنار شماست تا با شناخت دقیق موقعیت، متراژ و مدارک هر ملک، تصمیم مطمئن‌تری بگیرید.'
-  const phone = settings?.phone_1 || ''
-  const phone2 = settings?.phone_2 || ''
-  const address = settings?.address_fa || 'جزیره قشم، استان هرمزگان'
-  const phones = [phone, phone2].filter(Boolean)
 
   const [offset, setOffset] = useState(0)
 
@@ -45,20 +36,19 @@ export default function HomeHero({ settings }) {
           src={heroImage}
           alt=""
           style={{
-            transform: `translate3d(0, ${offset * 0.05}px, 0) scale(${1.1 - offset / 9000})`,
+            transform: `translate3d(0, ${offset * 0.06}px, 0) scale(${1.12 - offset / 9000})`,
           }}
         />
       </div>
       <div className="hero__scrim" aria-hidden="true" />
 
-      {/* The brand wordmark is the hero's typographic layer: it stays behind the
-          content and drifts away as the overview section arrives. */}
+      {/* Oversized editorial wordmark — drifts up and fades as you scroll. */}
       <span
         className="hero__wordmark"
         aria-hidden="true"
         style={{
-          transform: `translate3d(0, ${offset * -0.18}px, 0)`,
-          opacity: Math.max(0, 1 - offset / 560),
+          transform: `translate3d(0, ${offset * -0.16}px, 0)`,
+          opacity: Math.max(0, 1 - offset / 520),
         }}
       >
         Real <em>Estate</em>
@@ -66,44 +56,16 @@ export default function HomeHero({ settings }) {
 
       <div className="hero__inner">
         <div className="shell shell--wide">
-          <div className="hero__topline">
-            <span className="eyebrow" style={{ color: 'var(--gold-soft)' }}>
-              JAVID REAL ESTATE · AMLAK-E JAVED
-            </span>
-            <span className="hero__qeshm">QESHM</span>
-          </div>
-
           <div className="hero__bottom">
-            <div>
-              <h1 className="hero__headline">{headline}</h1>
-              <div className="hero__actions">
-                <Link className="btn btn--light" to="/properties">
-                  مشاهده املاک
-                </Link>
-              </div>
+            <h1 className="hero__headline">{headline}</h1>
+            <div className="hero__actions">
+              <Link className="btn btn--light" to="/properties">
+                مشاهده املاک
+              </Link>
+              <Link className="btn btn--outline-inverse" to="/contact">
+                دریافت مشاوره
+              </Link>
             </div>
-
-            <p className="hero__sub">{sub}</p>
-          </div>
-
-          <div className="hero__bar">
-            <span className="hero__bar-item">
-              <span className="hero__bar-label">محدوده فعالیت</span>
-              <span>{address}</span>
-            </span>
-
-            {phones.length ? (
-              <span className="hero__bar-item">
-                <span className="hero__bar-label">تماس</span>
-                <span className="hero__bar-phones">
-                  {phones.map((number) => (
-                    <a key={number} className="en-sans" href={telLink(number)}>
-                      {number}
-                    </a>
-                  ))}
-                </span>
-              </span>
-            ) : null}
           </div>
         </div>
       </div>

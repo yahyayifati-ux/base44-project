@@ -4,46 +4,12 @@ import { Link } from 'react-router-dom'
 import { api } from '../api'
 import { EmptyState, ErrorState, LoadingState } from '../components/Feedback.jsx'
 import HomeHero from '../components/HomeHero.jsx'
-import ParallaxImage from '../components/ParallaxImage.jsx'
 import PropertyCard from '../components/PropertyCard.jsx'
+import QeshmIsland from '../components/QeshmIsland.jsx'
 import Reveal from '../components/Reveal.jsx'
 import { useSettings } from '../components/settings.jsx'
 import { faNumber } from '../format'
 import { useSeo } from '../seo.js'
-
-const SERVICES = [
-  {
-    title: 'راهنمایی برای انتخاب ملک',
-    text: 'نیاز، بودجه و محدوده مورد نظر شما را بررسی می‌کنیم تا گزینه‌های واقعی موجود را ببینید.',
-  },
-  {
-    title: 'بررسی موقعیت ملک',
-    text: 'محله، دسترسی‌ها و موقعیت هر ملک را با شناخت محلی برایتان توضیح می‌دهیم.',
-  },
-  {
-    title: 'معرفی فرصت‌های خرید',
-    text: 'فایل‌های موجود را با مشخصات اعلام‌شده و تصاویر واقعی در اختیار شما می‌گذاریم.',
-  },
-  {
-    title: 'بررسی مشخصات و مدارک اعلام‌شده',
-    text: 'متراژ، طبقه، تعداد اتاق و نوع مدارک اعلام‌شده را روشن و بدون اغراق منتقل می‌کنیم.',
-  },
-  {
-    title: 'مشاوره برای سرمایه‌گذاری',
-    text: 'تفاوت کاربری زمین، واحد تجاری و واحد مسکونی در قشم را برای تصمیم بهتر توضیح می‌دهیم.',
-  },
-  {
-    title: 'همراهی در مسیر خرید یا فروش',
-    text: 'از بازدید و مذاکره تا توافق نهایی، در کنار شما هستیم.',
-  },
-]
-
-const AREAS = [
-  { label: 'درگهان', value: 'درگهان' },
-  { label: 'مرکز قشم', value: 'قشم' },
-  { label: 'رمچاه', value: 'رمچاه' },
-  { label: 'سوزا', value: 'سوزا' },
-]
 
 export default function HomePage() {
   const { settings } = useSettings()
@@ -85,15 +51,14 @@ export default function HomePage() {
     load()
   }, [load])
 
-  const aboutImage = settings?.about_image || '/images/about.jpg'
   const qeshmImage = settings?.qeshm_image || '/images/qeshm.jpg'
 
   return (
     <>
       <HomeHero settings={settings} />
 
-      {/* ---------- editorial qeshm overview ---------- */}
-      <section className="section" id="about">
+      {/* ---------- editorial Qeshm overview ---------- */}
+      <section className="section section--cream" id="about">
         <div className="shell shell--wide">
           <div className="overview">
             <Reveal>
@@ -109,11 +74,13 @@ export default function HomePage() {
               </Link>
             </Reveal>
 
-            <ParallaxImage
-              className="overview__image"
-              src={qeshmImage}
-              alt="سواحل جزیره قشم"
-            />
+            <Reveal delay={120}>
+              <QeshmIsland
+                className="overview__island"
+                src={qeshmImage}
+                alt="نقشه جزیره قشم"
+              />
+            </Reveal>
           </div>
         </div>
       </section>
@@ -206,83 +173,6 @@ export default function HomePage() {
           )}
         </div>
       </section>
-
-      {/* ---------- services ---------- */}
-      <section className="section section--dark">
-        <div className="shell shell--wide">
-          <div className="split">
-            <Reveal>
-              <p className="eyebrow">Services</p>
-              <h2 className="title-lg" style={{ marginTop: 16 }}>
-                خدمات املاک جاوید
-              </h2>
-              <p className="lede" style={{ marginTop: 18 }}>
-                ما ملک را برای شما «می‌فروشیم» نیستیم؛ اطلاعات روشن می‌دهیم تا خودتان با
-                اطمینان تصمیم بگیرید.
-              </p>
-              <Link className="btn btn--light" to="/contact" style={{ marginTop: 26 }}>
-                برای انتخاب بهتر، مشاوره بگیرید
-              </Link>
-            </Reveal>
-
-            <Reveal delay={90}>
-              <div className="service-list">
-                {SERVICES.map((service, index) => (
-                  <div className="service-item" key={service.title}>
-                    <span className="service-item__index">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <span>
-                      <span className="service-item__title">{service.title}</span>
-                      <span className="service-item__text">{service.text}</span>
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- qeshm editorial ---------- */}
-      <section className="qeshm">
-        <div className="qeshm__media" aria-hidden="true">
-          <img src={aboutImage} alt="" loading="lazy" />
-        </div>
-        <div className="qeshm__scrim" aria-hidden="true" />
-        <div className="shell shell--wide">
-          <div className="qeshm__inner">
-            <Reveal>
-              <p className="eyebrow">Local Knowledge</p>
-              <h2 className="qeshm__word">QESHM</h2>
-              <p className="lede" style={{ marginTop: 22 }}>
-                {settings?.qeshm_text_fa ||
-                  'قشم بزرگ‌ترین جزیره خلیج فارس است؛ از بازارها و مجتمع‌های تجاری درگهان تا محله‌های مسکونی و نوار ساحلی.'}
-              </p>
-            </Reveal>
-
-            <Reveal delay={90}>
-              <p className="eyebrow">Popular Areas</p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 18 }}>
-                {AREAS.map((area) => (
-                  <Link
-                    key={area.value}
-                    className="badge"
-                    to={`/properties?location=${encodeURIComponent(area.value)}`}
-                    style={{ background: 'rgba(255,255,255,.08)', color: 'var(--ivory)', borderColor: 'var(--line-inverse)' }}
-                  >
-                    {area.label}
-                  </Link>
-                ))}
-              </div>
-              <p className="field__hint" style={{ marginTop: 22, color: 'rgba(245,241,234,.6)' }}>
-                برای مشاهده فایل‌های هر محدوده روی نام آن بزنید.
-              </p>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
     </>
   )
 }

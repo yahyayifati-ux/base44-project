@@ -25,22 +25,22 @@
   height: 100%;
   object-fit: cover;
   /* Scaled up slightly so the scroll parallax never exposes an edge. */
-  transform: scale(1.1);
+  transform: scale(1.12);
   will-change: transform;
 }
 
 .hero__scrim {
   position: absolute;
   inset: 0;
-  /* Restrained overlay: keeps white type readable without turning the
-     photograph into a dark, cool-toned image. */
+  /* Top + bottom gradient: darker at the edges so the wordmark and headline
+     read clearly, lighter in the middle so the office storefront is visible. */
   background: linear-gradient(
       180deg,
-      rgba(9, 22, 19, 0.58) 0%,
-      rgba(9, 22, 19, 0.24) 42%,
-      rgba(9, 22, 19, 0.64) 100%
-    ),
-    linear-gradient(90deg, rgba(9, 22, 19, 0.42) 0%, rgba(9, 22, 19, 0) 62%);
+      rgba(9, 22, 19, 0.62) 0%,
+      rgba(9, 22, 19, 0.12) 30%,
+      rgba(9, 22, 19, 0.12) 55%,
+      rgba(9, 22, 19, 0.72) 100%
+    );
 }
 
 .hero__inner {
@@ -54,7 +54,7 @@
    and centred so the photograph reads through the letterforms. */
 .hero__wordmark {
   position: absolute;
-  top: clamp(94px, 14vh, 176px);
+  top: clamp(94px, 13vh, 168px);
   inset-inline: 0;
   z-index: 2;
   text-align: center;
@@ -66,57 +66,25 @@
   letter-spacing: 0.004em;
   text-transform: uppercase;
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.46);
   text-shadow: 0 2px 42px rgba(9, 22, 19, 0.4);
   will-change: transform, opacity;
 }
 
 .hero__wordmark em {
   font-style: italic;
-  color: rgba(255, 255, 255, 0.68);
-}
-
-.hero__topline {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-  border-top: 1px solid var(--line-inverse);
-  padding-top: 20px;
-  margin-bottom: clamp(18px, 3vw, 34px);
-  font-size: 0.82rem;
-}
-
-.hero__qeshm {
-  font-family: var(--font-en);
-  font-size: clamp(1rem, 2vw, 1.5rem);
-  letter-spacing: 0.5em;
-  color: var(--gold-soft);
-  direction: ltr;
-  unicode-bidi: isolate;
+  color: rgba(255, 255, 255, 0.64);
 }
 
 .hero__bottom {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
-  gap: clamp(20px, 4vw, 60px);
-  align-items: end;
-  margin-top: 26px;
+  margin-top: auto;
 }
 
 .hero__headline {
-  font-size: clamp(1.7rem, 3.9vw, 3.3rem);
+  font-size: clamp(1.6rem, 3.6vw, 3rem);
   font-weight: 500;
-  line-height: 1.45;
-  max-width: 22ch;
-}
-
-.hero__sub {
-  font-size: clamp(0.92rem, 1.2vw, 1rem);
-  line-height: 2;
-  color: rgba(255, 255, 255, 0.82);
-  max-width: 44ch;
+  line-height: 1.5;
+  max-width: 20ch;
 }
 
 .hero__actions {
@@ -124,44 +92,6 @@
   gap: 12px;
   flex-wrap: wrap;
   margin-top: 24px;
-}
-
-/* Office details, laid out like the reference: a row of items separated by
-   thin dividers instead of a stacked list. */
-.hero__bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 14px clamp(18px, 3vw, 46px);
-  margin-top: clamp(24px, 3vw, 38px);
-  border-top: 1px solid var(--line-inverse);
-  padding-top: 20px;
-  font-size: 0.86rem;
-  color: rgba(255, 255, 255, 0.82);
-}
-
-.hero__bar-item {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  padding-inline-end: clamp(18px, 3vw, 46px);
-  border-inline-end: 1px solid var(--line-inverse);
-}
-
-.hero__bar-item:last-child {
-  border-inline-end: 0;
-  padding-inline-end: 0;
-}
-
-.hero__bar-label {
-  font-size: 0.72rem;
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.hero__bar-phones {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 14px;
 }
 
 .hero__scroll {
@@ -215,11 +145,32 @@
   direction: ltr;
 }
 
-.overview__image {
+.overview__island {
   grid-column: 2;
   grid-row: 1 / span 2;
-  align-self: stretch;
-  min-height: clamp(320px, 42vw, 620px);
+  align-self: center;
+}
+
+/* Qeshm Island silhouette — an SVG clip-path shaped like the island with an
+   aerial photograph inside. Scales up gently when revealed. */
+.qeshm-island {
+  width: 100%;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 1.4s var(--ease), transform 1.4s var(--ease);
+  will-change: opacity, transform;
+}
+
+.qeshm-island.is-shown {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.qeshm-island svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 10px 40px rgba(20, 24, 22, 0.12));
 }
 
 /* Editorial "Qeshm / overview" heading — the signature moment of the section,
@@ -389,86 +340,6 @@
   font-size: 0.74rem;
   letter-spacing: 0.14em;
   color: var(--gold-soft);
-}
-
-.service-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 clamp(20px, 4vw, 60px);
-}
-
-.service-item {
-  display: flex;
-  gap: 18px;
-  padding-block: 22px;
-  border-top: 1px solid var(--line-inverse);
-}
-
-.service-item__index {
-  font-family: var(--font-en);
-  font-size: 1.05rem;
-  color: var(--gold);
-  min-width: 34px;
-  direction: ltr;
-}
-
-.service-item__title {
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 6px;
-}
-
-.service-item__text {
-  font-size: 0.87rem;
-  line-height: 1.9;
-  color: rgba(245, 241, 234, 0.72);
-}
-
-.qeshm {
-  position: relative;
-  color: var(--white);
-  overflow: hidden;
-}
-
-.qeshm__media {
-  position: absolute;
-  inset: 0;
-}
-
-.qeshm__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.qeshm__scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(8, 24, 20, 0.86) 0%,
-    rgba(8, 24, 20, 0.5) 55%,
-    rgba(8, 24, 20, 0.8) 100%
-  );
-}
-
-.qeshm__inner {
-  position: relative;
-  z-index: 2;
-  padding-block: clamp(70px, 12vw, 170px);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(24px, 4vw, 60px);
-  align-items: center;
-}
-
-.qeshm__word {
-  font-family: var(--font-en);
-  font-size: clamp(2.6rem, 9vw, 8rem);
-  line-height: 0.9;
-  letter-spacing: 0.12em;
-  direction: ltr;
-  unicode-bidi: isolate;
 }
 
 /* ---------- listing page ---------- */
@@ -810,10 +681,9 @@
     grid-template-rows: auto;
   }
 
-  .overview__image {
+  .overview__island {
     grid-column: 1;
     grid-row: auto;
-    min-height: clamp(260px, 52vw, 460px);
   }
 
   .listing-layout {
@@ -852,15 +722,6 @@
     padding-top: 96px;
   }
 
-  .hero__bottom,
-  .qeshm__inner {
-    grid-template-columns: 1fr;
-  }
-
-  .service-list {
-    grid-template-columns: 1fr;
-  }
-
   .sticky-contact {
     display: flex;
     position: fixed;
@@ -882,10 +743,6 @@
   .hero__wordmark {
     top: clamp(86px, 12vh, 118px);
     font-size: clamp(2.35rem, 14.5vw, 4rem);
-  }
-
-  .hero__bottom {
-    gap: 18px;
   }
 
   .stat-grid {
