@@ -3,13 +3,11 @@ import { Link, useLocation } from 'react-router-dom'
 
 import { useSettings } from './settings.jsx'
 
+/* Minimal editorial header: a small JAVID REAL ESTATE wordmark, a short
+   Persian navigation and a single consultation action. Nothing else — the
+   reference is intentionally spacious, so no contact block or extra links. */
 const NAV_ITEMS = [
-  { label: 'صفحه اصلی', to: '/' },
-  { label: 'مشاهده املاک', to: '/properties' },
-  { label: 'خرید و فروش', to: '/properties?transaction=sale' },
-  { label: 'اجاره و رهن', to: '/properties?category=rent-mortgage' },
-  { label: 'زمین', to: '/properties?category=land' },
-  { label: 'املاک تجاری', to: '/properties?category=commercial' },
+  { label: 'املاک', to: '/properties' },
   { label: 'درباره ما', to: '/about' },
   { label: 'تماس با ما', to: '/contact' },
 ]
@@ -57,7 +55,6 @@ export default function SiteHeader() {
   const brandName = settings?.brand_fa || 'املاک جاوید'
   const brandEn = settings?.brand_en || 'JAVID REAL ESTATE'
   const phone = settings?.phone_1 || ''
-  const address = settings?.address_fa || 'قشم و درگهان'
 
   return (
     <header className={`site-header ${solid ? 'site-header--solid' : ''}`}>
@@ -90,10 +87,6 @@ export default function SiteHeader() {
           </nav>
 
           <div className="header-actions">
-            <div className="header-contact">
-              <span className="header-contact__phone">{phone || '—'}</span>
-              <span className="header-contact__meta">{address}</span>
-            </div>
             <Link className="btn btn--sm btn--light" to="/contact">
               دریافت مشاوره
             </Link>

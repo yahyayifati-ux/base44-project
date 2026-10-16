@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { telLink, whatsappLink } from '../format'
+import { telLink } from '../format'
 
-/* Homepage hero: oversized brand typography layered over an architectural
-   photograph, with the Persian headline and the office details below.
-   Both the photograph and the wordmark move a little against the scroll so the
-   hero hands over to the overview section; everything collapses to a static
-   block when the visitor prefers reduced motion. */
+/* Homepage hero: oversized editorial "Real Estate" typography layered over the
+   JAVID office photograph, with a short Persian headline, a single call to
+   action and a subtle line of office details at the foot. The wordmark and
+   photograph drift gently against the scroll; everything collapses to a
+   static block when the visitor prefers reduced motion. */
 export default function HomeHero({ settings }) {
   const heroImage = settings?.hero_image || '/images/hero.jpg'
   const headline = settings?.hero_headline_fa || 'انتخابی مطمئن برای آینده‌ای ارزشمند'
@@ -16,7 +16,6 @@ export default function HomeHero({ settings }) {
     'املاک جاوید در قشم و درگهان کنار شماست تا با شناخت دقیق موقعیت، متراژ و مدارک هر ملک، تصمیم مطمئن‌تری بگیرید.'
   const phone = settings?.phone_1 || ''
   const phone2 = settings?.phone_2 || ''
-  const whatsapp = settings?.whatsapp || ''
   const address = settings?.address_fa || 'جزیره قشم، استان هرمزگان'
   const phones = [phone, phone2].filter(Boolean)
 
@@ -81,9 +80,6 @@ export default function HomeHero({ settings }) {
                 <Link className="btn btn--light" to="/properties">
                   مشاهده املاک
                 </Link>
-                <Link className="btn btn--outline-inverse" to="/contact">
-                  دریافت مشاوره
-                </Link>
               </div>
             </div>
 
@@ -106,21 +102,6 @@ export default function HomeHero({ settings }) {
                     </a>
                   ))}
                 </span>
-              </span>
-            ) : null}
-
-            {whatsapp ? (
-              <span className="hero__bar-item">
-                <a
-                  href={whatsappLink(
-                    whatsapp,
-                    'سلام، برای مشاوره خرید ملک در قشم تماس می‌گیرم.'
-                  )}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  گفت‌وگو در واتس‌اپ
-                </a>
               </span>
             ) : null}
           </div>

@@ -92,40 +92,18 @@ export default function HomePage() {
     <>
       <HomeHero settings={settings} />
 
-      {/* ---------- project overview ---------- */}
-      <section className="section section--cream" id="about">
+      {/* ---------- editorial qeshm overview ---------- */}
+      <section className="section" id="about">
         <div className="shell shell--wide">
           <div className="overview">
             <Reveal>
-              <p className="overview__marker">
-                <strong className="overview__marker-strong">Project</strong>
-                <em className="overview__marker-em">overview</em>
-              </p>
-              <h2 className="title-lg">
-                املاک جاوید
-                <br />
-                در یک نگاه
-              </h2>
-              <div className="overview__meta">
-                <span>
-                  حوزه فعالیت: <strong>املاک و مستغلات</strong>
-                </span>
-                <span>
-                  محدوده: <strong>قشم و درگهان</strong>
-                </span>
-              </div>
-            </Reveal>
-
-            <Reveal delay={90}>
+              <h2 className="overview__word">Qeshm</h2>
+              <p className="overview__kicker">overview</p>
               <p className="lede">
-                {settings?.about_intro_fa ||
-                  'املاک جاوید در قشم و درگهان فعالیت می‌کند و تمرکز آن بر معرفی شفاف فرصت‌های ملکی این جزیره است.'}
+                {settings?.qeshm_text_fa ||
+                  'قشم بزرگ‌ترین جزیره خلیج فارس است؛ از بازارها و مجتمع‌های تجاری درگهان تا محله‌های مسکونی و نوار ساحلی.'}
               </p>
-              <p className="lede" style={{ marginTop: 18 }}>
-                {settings?.about_body_fa ||
-                  'ما با شناخت محله‌ها و محدوده‌های قشم به شما کمک می‌کنیم ملک مناسب خود را با اطلاعات روشن انتخاب کنید.'}
-              </p>
-              <Link className="link-arrow" to="/about" style={{ marginTop: 22 }}>
+              <Link className="link-arrow" to="/about" style={{ marginTop: 26 }}>
                 درباره املاک جاوید
                 <span className="link-arrow__mark">←</span>
               </Link>
@@ -133,8 +111,8 @@ export default function HomePage() {
 
             <ParallaxImage
               className="overview__image"
-              src={aboutImage}
-              alt="معماری مسکونی مدرن"
+              src={qeshmImage}
+              alt="سواحل جزیره قشم"
             />
           </div>
         </div>
@@ -269,7 +247,7 @@ export default function HomePage() {
       {/* ---------- qeshm editorial ---------- */}
       <section className="qeshm">
         <div className="qeshm__media" aria-hidden="true">
-          <img src={qeshmImage} alt="" loading="lazy" />
+          <img src={aboutImage} alt="" loading="lazy" />
         </div>
         <div className="qeshm__scrim" aria-hidden="true" />
         <div className="shell shell--wide">
@@ -305,31 +283,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ---------- closing cta ---------- */}
-      <section className="section section--tight section--cream">
-        <div className="shell shell--wide">
-          <div className="section-header__row">
-            <div>
-              <p className="eyebrow">Next Step</p>
-              <h2 className="title-md" style={{ marginTop: 12 }}>
-                ملک مورد نظرتان را پیدا نکردید؟
-              </h2>
-              <p className="lede" style={{ marginTop: 10 }}>
-                نیاز خود را برای ما ثبت کنید تا فایل‌های موجود و فرصت‌های تازه را با شما
-                بررسی کنیم.
-              </p>
-            </div>
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <Link className="btn btn--emerald" to="/properties">
-                مشاهده املاک
-              </Link>
-              <Link className="btn btn--outline" to="/contact">
-                ثبت درخواست
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   )
 }

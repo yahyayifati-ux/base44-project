@@ -222,6 +222,32 @@
   min-height: clamp(320px, 42vw, 620px);
 }
 
+/* Editorial "Qeshm / overview" heading — the signature moment of the section,
+   mirroring the reference: a large italic serif place name over a lighter
+   "overview" line, both in the English display face. */
+.overview__word {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(3.4rem, 9vw, 8.5rem);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  color: var(--charcoal);
+  direction: ltr;
+  unicode-bidi: isolate;
+  margin-bottom: 4px;
+}
+
+.overview__kicker {
+  font-family: var(--font-en);
+  font-size: clamp(1.1rem, 1.7vw, 1.45rem);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  direction: ltr;
+  margin-bottom: clamp(20px, 2.6vw, 34px);
+}
+
 /* ---------- editorial image reveal ---------- */
 
 .parallax {
